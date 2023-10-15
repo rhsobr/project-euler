@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
-	"project_euler/primes"
+	"project_euler/utils/primes"
 )
 
 type Fraction struct {

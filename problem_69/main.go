@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"project_euler/primes"
+	"project_euler/utils/primes"
 )
 
 func countNumberOfRelativePrimes(number int, counterStopAt float64) int {

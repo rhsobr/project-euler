@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
-	"project_euler/primes"
+	"project_euler/utils/primes"
 )
 
 type Fraction struct {
@@ -54,5 +54,5 @@ func getOrderedFractions(d int) Fraction {
 }
 
 func main() {
-	fmt.Println(getOrderedFractions(5))
+	fmt.Println(getOrderedFractions(1000000))
 }
