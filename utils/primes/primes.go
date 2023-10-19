@@ -25,3 +25,20 @@ func AreRelativePrimes(number1 int, number2 int) bool {
 func IsPrime(number int) bool {
 	return big.NewInt(int64(number)).ProbablyPrime(0)
 }
+
+var primesMap map[int]int = make(map[int]int)
+
+func NextPrime(number int) int {
+	result, ok := primesMap[number]
+
+	if ok {
+		return result
+	}
+
+	for i := number + 1; ; i++ {
+		if IsPrime(i) {
+			primesMap[number] = i
+			return i
+		}
+	}
+}
