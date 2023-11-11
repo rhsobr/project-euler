@@ -119,3 +119,20 @@ func IsPerfectSquare(n int) bool {
 	sqrt := math.Sqrt(float64(n))
 	return sqrt-math.Floor(sqrt) == 0
 }
+
+var factorialsMap map[int]int = make(map[int]int)
+
+func GetFactorial(n int) int {
+	memo, ok := factorialsMap[n]
+
+	if ok {
+		return memo
+	}
+
+	if n > 0 {
+		factorialsMap[n] = n * GetFactorial(n-1)
+		return factorialsMap[n]
+	}
+
+	return 1
+}
