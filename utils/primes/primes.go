@@ -1,6 +1,8 @@
 package primes
 
-import "math/big"
+import (
+	"math/big"
+)
 
 func recursiveGreatestCommonFactor(number1 int, number2 int) int {
 	if number2 == 0 {

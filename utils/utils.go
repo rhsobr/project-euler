@@ -3,7 +3,56 @@ package utils
 import (
 	"math"
 	"math/big"
+	"project_euler/utils/primes"
 )
+
+func GetAllFactors(n int) map[int]int {
+	factorsMap := map[int]int{}
+
+	if primes.IsPrime(n) {
+		factorsMap[1] = 1
+		factorsMap[n] = 1
+		return factorsMap
+	}
+
+	currentPrime := 1
+
+	for n > 1 {
+		currentPrime = primes.NextPrime(currentPrime)
+
+		for n%currentPrime == 0 {
+			n = n / currentPrime
+
+			_, ok := factorsMap[currentPrime]
+
+			if !ok {
+				factorsMap[currentPrime] = 1
+				continue
+			}
+
+			factorsMap[currentPrime] = factorsMap[currentPrime] + 1
+		}
+	}
+
+	return factorsMap
+}
+
+func CountNumberOfRelativePrimes(number int) int {
+	if primes.IsPrime(number) {
+		return number - 1
+	}
+
+	factors := GetAllFactors(number)
+
+	sum := 1
+
+	for factor, count := range factors {
+		fFactor := float64(factor)
+		sum *= int(math.Pow(fFactor, float64(count)) - math.Pow(fFactor, float64(count-1)))
+	}
+
+	return sum
+}
 
 func getAnTestRec(initialNumber int, a float64, x float64, position int, currPosition int) []float64 {
 	if position == currPosition {
