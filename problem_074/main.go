@@ -7,18 +7,6 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func getDigitsWithAcc(n int, acc []int) []int {
-	if n < 10 {
-		return append([]int{n}, acc...)
-	}
-
-	return getDigitsWithAcc(n/10, append([]int{n % 10}, acc...))
-}
-
-func getDigits(n int) []int {
-	return getDigitsWithAcc(n, []int{})
-}
-
 var factorialsSumOfDigitsMap map[int]int = make(map[int]int)
 
 func getFactorialSumOfDigits(n int) (sum int) {
@@ -28,7 +16,7 @@ func getFactorialSumOfDigits(n int) (sum int) {
 		return mSum
 	}
 
-	for _, digit := range getDigits(n) {
+	for _, digit := range utils.GetDigits(n) {
 		sum += utils.GetFactorial(digit)
 	}
 

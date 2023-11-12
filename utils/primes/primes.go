@@ -24,14 +24,24 @@ func AreRelativePrimes(number1 int, number2 int) bool {
 	return recursiveGreatestCommonFactor(number1, number2) == 1
 }
 
+var primesMap map[int]bool = make(map[int]bool)
+
 func IsPrime(number int) bool {
-	return big.NewInt(int64(number)).ProbablyPrime(0)
+	result, ok := primesMap[number]
+
+	if ok {
+		return result
+	}
+
+	primesMap[number] = big.NewInt(int64(number)).ProbablyPrime(0)
+
+	return primesMap[number]
 }
 
-var primesMap map[int]int = make(map[int]int)
+var nextPrimesMap map[int]int = make(map[int]int)
 
 func NextPrime(number int) int {
-	result, ok := primesMap[number]
+	result, ok := nextPrimesMap[number]
 
 	if ok {
 		return result
@@ -39,7 +49,7 @@ func NextPrime(number int) int {
 
 	for i := number + 1; ; i++ {
 		if IsPrime(i) {
-			primesMap[number] = i
+			nextPrimesMap[number] = i
 			return i
 		}
 	}

@@ -6,33 +6,58 @@ import (
 	"project_euler/utils/primes"
 )
 
+var allFactorsMap map[int]map[int]int = make(map[int]map[int]int)
+
 func GetAllFactors(n int) map[int]int {
+	cached, ok := allFactorsMap[n]
+
+	if ok {
+		return cached
+	}
+
 	factorsMap := map[int]int{}
 
-	if primes.IsPrime(n) {
-		factorsMap[1] = 1
-		factorsMap[n] = 1
+	if n == 1 {
 		return factorsMap
 	}
 
-	currentPrime := 1
+	if primes.IsPrime(n) {
+		factorsMap[n] = 1
+		allFactorsMap[n] = factorsMap
+		return factorsMap
+	}
 
-	for n > 1 {
-		currentPrime = primes.NextPrime(currentPrime)
+	currentPrime := 2
 
-		for n%currentPrime == 0 {
-			n = n / currentPrime
+	for {
+		if n%currentPrime > 0 {
+			currentPrime = primes.NextPrime(currentPrime)
+			continue
+		}
 
-			_, ok := factorsMap[currentPrime]
+		_, ok := factorsMap[currentPrime]
+
+		if ok {
+			factorsMap[currentPrime] += 1
+		} else {
+			factorsMap[currentPrime] = 1
+		}
+
+		for factor, count := range GetAllFactors(n / currentPrime) {
+			_, ok := factorsMap[factor]
 
 			if !ok {
-				factorsMap[currentPrime] = 1
+				factorsMap[factor] = count
 				continue
 			}
 
-			factorsMap[currentPrime] = factorsMap[currentPrime] + 1
+			factorsMap[factor] += count
 		}
+
+		break
 	}
+
+	allFactorsMap[n] = factorsMap
 
 	return factorsMap
 }
@@ -135,4 +160,16 @@ func GetFactorial(n int) int {
 	}
 
 	return 1
+}
+
+func getDigitsWithAcc(n int, acc []int) []int {
+	if n < 10 {
+		return append([]int{n}, acc...)
+	}
+
+	return getDigitsWithAcc(n/10, append([]int{n % 10}, acc...))
+}
+
+func GetDigits(n int) []int {
+	return getDigitsWithAcc(n, []int{})
 }
